@@ -90,13 +90,13 @@ for i in students.values {
     general += Double(i)
 }
 avrg = general / Double(students.count)
-print("general \(general), average \(avrg)")
+//print("general \(general), average \(avrg)")
 
 var chess : [String:Bool] = [:]
 let a = "a"
 if var scalar = a.unicodeScalars.first {
     var firstKey = scalar.value
-    print("unicode \(firstKey)")
+    //print("unicode \(firstKey)")
     for i in 0..<9 {
         for j in 1..<9 {
             var fullKey = String(UnicodeScalar(Int(firstKey) + i) ?? "-") + "\(j)"
@@ -107,7 +107,7 @@ if var scalar = a.unicodeScalars.first {
             chess[fullKey] = fullVal
         }
     }
-    print(chess)
+    //print(chess)
 }
 
 // Sets
@@ -126,3 +126,166 @@ let singleDigitPrimeNumbers: Set = [2, 3, 5, 7]
 // [1, 9]
 // print(oddDigits.symmetricDifference(singleDigitPrimeNumbers).sorted())
 // [1, 2, 9]
+
+
+var Age = 21
+switch Age {
+case 0...21:
+    print("teenager")
+    fallthrough
+case 60...100:
+    print("senior")
+default:
+    print("default")
+}
+
+var name = "Nikolay"
+switch (name, Age) {
+case ("Nikolay", 21):
+    print("Hi Nikolay")
+case (_, let num) where num > 10:
+    print("Hello!")
+default:
+    print("Hi")
+}
+
+mainLoop : for _ in 1...100 {
+    for i in 1...10 {
+        //print(i)
+        if i == 1 {
+            break mainLoop
+        }
+    }
+}
+
+func summArray (array : [Int]) -> Int {
+    var sum = 0
+    for i in array {
+        sum += i
+    }
+    return sum
+}
+var arr = [1, 2, 3, 4, 5, 6]
+print(summArray(array: arr))
+
+func calculate(array : [Int], type : Int? = nil) -> (sum : Int, count : Int) {
+    var sum = 0
+    var count = 0
+    for i in array {
+        if i == type {
+            sum += i
+            count += 1
+        }
+    }
+    return (sum, count)
+}
+
+func calculateSequence (Sequence seq : Int...) -> Int { // где ... несколько аргументов
+    var sum = 0
+    for value in seq {
+        sum += value
+    }
+    return sum
+}
+print(calculateSequence(Sequence: 1, 2, 3)) // <- аналог array
+// возвращать из функции можно optional
+
+func sayHi () {
+    print("Hi")
+}
+let h = sayHi //константа может быть функцией
+h() //h теперь функция которая ничего не принимает и ничего не возвращает
+
+func doSomething (whatToDo:()->()) { //функция может принимать функцию
+    whatToDo()
+}
+doSomething(whatToDo: sayHi)
+
+func returnFunc() -> ()->() { // функция может возвращать функцию
+    return sayHi
+}
+
+//CLOSURES
+func filterArray(array : [Int], f: (Int) -> Bool) -> [Int] {
+    var filtered = [Int]()
+    for i in array {
+        if f(i) {
+            filtered.append(i)
+        }
+    }
+    return filtered
+}
+
+var numbers = [1, 2, 3, 4, 5, 0]
+filterArray(array : numbers, f : {(i : Int) -> Bool in
+    return i % 2 == 0
+})
+
+filterArray(array : numbers, f: {i in
+    return i % 2 == 0
+})
+
+let sample = [1, 2]
+filterArray(array: numbers) {value in
+    for include in sample {
+        if include == value {
+            return true
+        }
+    }
+    return false
+}
+
+//ENUM
+enum Direction : String {
+    case left = "Left!"
+    case right = "Right"
+}
+enum Action {
+    case Run(meters : Int, speed : Int)
+    case Walk(meters : Int)
+    case Stop
+    case Turn(direction : Direction)
+}
+var action = Action.Walk(meters: 10)
+action = .Run(meters: 10, speed: 5)
+
+switch action {
+case .Stop: print("stop")
+case .Walk(let meters) where meters > 100: print("meters \(meters)")
+    default: break
+}
+
+print(Direction.left.rawValue)
+
+//CLASSES AND STRUCTS
+class Student {
+    //properties
+    var name : String
+    var age : Int
+    
+    init(name: String, age: Int) {
+        self.name = name
+        self.age = age
+    }
+}
+let stud = Student(name: "Kolya", age: 21)
+
+struct StudentStruct {
+    //properties
+    var name : String
+    var age : Int
+}
+//у структуры по умолчанию есть коструктор
+var studStruct = StudentStruct(name: "Ivan", age: 19)
+
+//при работе со структурами происходит копирование, а при работе с классами используются указатели
+
+func addOneYear(student: Student) {
+    stud.age += 1
+}
+addOneYear(student: stud)
+func addOneYear(student: inout StudentStruct) {
+    stud.age += 1
+}
+addOneYear(student: &studStruct) //передача по указателю
+

@@ -289,3 +289,49 @@ func addOneYear(student: inout StudentStruct) {
 }
 addOneYear(student: &studStruct) //передача по указателю
 
+//PROPERTIES
+struct car {
+    var model : String {
+        willSet(newModel) {
+            print("will set " + newModel + "intead of model")
+        }
+        didSet(oldModel) {
+            print("did set " + model + "intead of oldModel ")
+        }
+    }
+}
+
+struct worker {
+    var name : String
+    var surname : String
+    var fullName : String {
+        get {
+            return name + " " + surname
+        }
+        set {
+            print("new full name is " + newValue)
+            let words = newValue.components(separatedBy: " ")
+            if words.count > 0 {
+                name = words[0]
+            }
+            if words.count > 1 {
+                surname = words[1]
+            }
+        }
+    }
+    static var workerCount = 0 //это store property который принадлежит к самому классу(типу), а не к экземплярам
+}
+var work = worker(name: "Nick", surname: "Rt")
+work.fullName
+
+class vehicle {
+    var model : String
+    // пример computer property
+    class var maxSpeed : Int {
+        return 250 // getter
+    }
+    
+    init(model: String) {
+        self.model = model
+    }
+}
